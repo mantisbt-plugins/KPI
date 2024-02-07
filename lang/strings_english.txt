@@ -1,0 +1,44 @@
+<?php
+$s_print_statistics_from = 'From';
+$s_print_statistics_to = 'To';
+$s_print_statistics_update = 'Query';
+$s_print_statistics_totals = 'Totals';
+$s_summary_statistics_link = 'Statistics' ;
+
+$s_kpi_config				=	'KPI configuration' ;
+$s_kpi_update_config		=	'Update KPI configuration' ;
+$s_kpi_title				=   'KPI indicators';
+$s_kpi_page				=   "KPI's";
+$s_plugin_KPI_kpi_page				=   "KPI's";
+$s_status1 = 'Status to measure against' ;
+$s_status2 = 'Final Status to measure' ;
+$s_limitdays = 'Performance treshold in days' ;
+
+$s_val1 = "ID" ;
+$s_val2 = "Summary" ;
+$s_val3 = "Submitted" ;
+$s_val4 = "Interval 1" ;
+$s_val5 = "Date Status 1" ;
+$s_val6 = "Interval 2" ;
+$s_val7 = "Date Final Status" ;
+$s_val8 = "Interval 3" ;
+$s_val9 = "On Time" ;
+$s_val10 = "Category" ;
+$s_val11 = "Handler" ;
+
+$s_KPI_statistics = "Statistics";
+$s_KPI_workflow = "Workflow";
+$s_KPI_main  = "Home";
+$s_kpi_link = "KPI"; 
+$s_KPI_status = "Status review";
+$s_KPI_submitted = "Submissions";
+
+$s_workflow_text = "The Workflow KPI is apart from dates depending on configuration of the plugin. Please read the documentation !";
+$s_statistics_text = "The Statistics KPI is simply showing the statistics of a given period !";
+$s_submitted_text = "The Submissions KPI is showing the submitted issues within a given period !";
+$s_status_text = "The Status KPI is showing the various statusses issues have had within a given period !";
+
+# Errors
+$MANTIS_ERROR['ERROR_SYNCUSER_FROM_ID'] = 'Not a valid "from user" selected';
+$MANTIS_ERROR['ERROR_SYNCUSER_TO_ID']   = 'Not a valid "to user" selected'; 
+$MANTIS_ERROR['ERROR_SYNCUSER_EQUAL']   = '"from user" is the same as "to user"'; 
