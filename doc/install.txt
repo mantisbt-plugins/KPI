@@ -1,4 +1,4 @@
-Mantis plugin KPI 2.10 for mantisbt version 2.x
+Mantis plugin KPI 2.20 for mantisbt version 2.x
 
 Author:		Cas Nuy
 Website:	http://www.nuy.info
@@ -15,27 +15,38 @@ Go to Manage
 Select Manage Plugins
 Install KPI
 Configure plugin by clicking on the name after install.
+Configurable options:
+'kpi_threshold'	=> Who is allowed to run this overview based upon access level
+'status1'		=> 1st status for measurement
+'status2'		=> Status to measure against
+'limitdays'		=> Initial definition of required time
+'UOM'			=> Are we measuring (D)ays, (H)ours or (M)inutes
+'initial'		=> Initial period can be last (Y)ear, (M)onth or (D)ay
+'working'		=> should we use standard working day units or fulltime span (workdays  = 5 days or 8 hours or 480 minutes)
+
 On the main menu a new option will be available.
 
 How does it work?
-This plugin calculates the number of days between 2 statusses en evaluates that against a ser number of days.
+This plugin calculates the number of days(or hours/minutes) between 2 statusses en evaluates that against a set number of days(or hours/minutes).
 Default it will calculate between Confirm date and Resolved date.
 Only issues with a date on Resolving are selected.
 Next the last confirm date is retrieved.
 If not found, it will retrieve the last assign date.
 If not found, it will use the date of submittal.
-Next these 2 dates are compared and if the period is less or equal than the set number of days (default 2), it will qualify the issue resolved within agreed period.
+Next these 2 dates are compared and if the period is less or equal than the set number of days(or hours/minutes), it will qualify the issue resolved within agreed period.
 Output is available on screen and as download.
 
 Output:
 Issue-id
-Assignee
+Summary
 Date of submittal
-Period between Status New and Confirmed
+Interval (1)  between submittal and 1st status
 Date of status Confirmed
-Period between Status Confirmed and Resolved
+Interval (2)between 1st status and 2nd status
 Date of status Resolved
-Period between Status New and Resolved
-On time
+Interval (3) between submittal and 2nd status
+On time Y/N based upon Interval (2)
 Category
+Handler
+Project
 

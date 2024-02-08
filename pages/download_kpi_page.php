@@ -19,7 +19,8 @@ $year_to = $_GET['year_to'];
 $limit = $_GET['limit'];
 $stat1 = $_GET['status1'];
 $stat2 = $_GET['status2'];
-
+$uom = $_GET['uom'];
+$working = $_GET['working'];
 $status_enum_string         = lang_get( 'status_enum_string' );
 $status_1 = MantisEnum::getLabel( $status_enum_string, $stat1 ) ;
 $status_2 = MantisEnum::getLabel( $status_enum_string, $stat2 ) ;
@@ -32,13 +33,36 @@ xmlns="http://www.w3.org/TR/REC-html40">
 </style>
 <div id="Classeur1_16681" align=center x:publishsource="Excel">
 <table x:str border=0 cellpadding=0 cellspacing=0 width=100% style='border-collapse:collapse'>
+<tr><td><b><?php echo lang_get('selection');?></b></td></tr>
+<tr><td>
+<?php 
+echo lang_get('useworking');?>
+</td><td> 
+<?php 
+if ( $working == 1 ){
+	echo lang_get('yes');
+} else {
+	echo lang_get('no');	
+}
+?>
+</td></tr>
+<tr><td><?php echo lang_get('limitdays');?></td><td> <?php echo $limit;?></td></tr>
+<tr><td><?php echo lang_get('uom');?></td><td> <?php echo $uom;?></td></tr>
+<tr><td><?php echo lang_get('print_statistics_from');?></td><td> <?php echo $day_from . "-". $month_from . "-". $year_from;?></td></tr>
+<tr><td><?php echo lang_get('print_statistics_to');?></td><td> <?php echo $day_to . "-". $month_to . "-". $year_to;?></td></tr>
+<tr><td><?php echo lang_get('status1');?></td><td> <?php echo $status_1 ?></td></tr>
+<tr><td><?php echo lang_get('status2');?></td><td> <?php echo $status_2?></td></tr>
+<tr></tr>
+
+
+
 <tr>
   <td><?php echo lang_get('val1');?></td>
   <td><?php echo lang_get('val2');?></td>
   <td><?php echo lang_get('val3');?></td>
   <td><?php echo lang_get('val4');?></td>
 	<td><?php echo $status_1;?></td>
-  <td><?php echo lang_get('val6');?></td>
+  <td><b><?php echo lang_get('val6');?></b></td>
 	<td><?php echo $status_2;?></td>
   <td><?php echo lang_get('val8');?></td>
   <td><?php echo lang_get('val9');?></td>
@@ -88,7 +112,7 @@ for( $i=0; $i < $num_records1; $i++ ) {
 	$val2=substr($t_row["summary"],0,50) ;
 	$val3=date("Y-m-d",$t_row["date_submitted"]) ;
 	$val7=date("Y-m-d",$t_row["date_modified"]);
-	$val8= workdays(round((strtotime($val7)-strtotime($val3))/86400));
+	$val8= workdays(round((strtotime($val7)-strtotime($val3))/86400), $uom, $working);
 	// now retrieve last date of status 2
 $query2 = " select date_modified from {bug_history} where bug_id=";
 	$query2 .= $val1;
@@ -118,8 +142,8 @@ $query2 = " select date_modified from {bug_history} where bug_id=";
 		$t_row2 = db_fetch_array( $result2 );
 		$val5= 	date("Y-m-d",$t_row2["date_modified"] );
 	}
-	$val4 = workdays(round((strtotime($val5)-strtotime($val3))/86400));
-	$val6 = workdays(round((strtotime($val7)-strtotime($val5))/86400));
+	$val4 = workdays(round((strtotime($val5)-strtotime($val3))/86400), $uom, $working);
+	$val6 = workdays(round((strtotime($val7)-strtotime($val5))/86400), $uom, $working);
 	If ($val6<= $limit){
 		$val9 ="Y";
 	}else{
@@ -135,7 +159,7 @@ $query2 = " select date_modified from {bug_history} where bug_id=";
   <td><?php echo $val3;?></td>
   <td><?php echo $val4;?></td>
   <td><?php echo $val5;?></td>
-  <td><?php echo $val6;?></td>
+  <td><b><?php echo $val6;?></b></td>
   <td><?php echo $val7;?></td>
   <td><?php echo $val8;?></td>
   <td><?php echo $val9;?></td>
