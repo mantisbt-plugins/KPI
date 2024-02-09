@@ -9,4 +9,4 @@ Next the last confirm date is retrieved.
 If not found, it will retrieve the last assign date.
 If not found, it will use the date of submittal.
 Next these 2 dates are compared and if the period is less or equal than the set number of days (/ hours/minutes), it will qualify the issue resolved within agreed period.
-Output is available on screen and as download.
+Output is available on screen and as download (XLS & CSV).
