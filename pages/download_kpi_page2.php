@@ -1,15 +1,6 @@
 <?php
 require_once( 'core.php' );
 require_once( config_get( 'plugin_path' ) . 'KPI' . DIRECTORY_SEPARATOR . 'KPI_api.php' );  
-
-auth_ensure_user_authenticated();
-access_ensure_project_level( plugin_config_get( 'kpi_threshold' ) );
-$t_export_title = "Export_kpi_to_excel";
-//$t_export_title = ereg_replace( '[\/:*?"<>|]', '', $t_export_title );
-# Make sure that IE can download the attachments under https.
-header( 'Pragma: public' );
-header( 'Content-Type: application/vnd.ms-excel' );
-header( 'Content-Disposition: attachment; filename="' . $t_export_title . '.xls"' );
 $day_from = $_GET['day_from'];
 $month_from = $_GET['month_from'];
 $year_from = $_GET['year_from'];
@@ -25,56 +16,76 @@ $status_enum_string         = lang_get( 'status_enum_string' );
 $status_1 = MantisEnum::getLabel( $status_enum_string, $stat1 ) ;
 $status_2 = MantisEnum::getLabel( $status_enum_string, $stat2 ) ;
 
-?>
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml"
-xmlns:o=3D"urn:schemas-microsoft-com:office:office"
-xmlns:x=3D"urn:schemas-microsoft-com:office:excel"
-xmlns=3D"http://www.w3.org/TR/REC-html40">
+$content	= '';
 
+$content	.= lang_get('selection');
+$content	.= "\r\n";
+$content	.= lang_get('useworking');
+$content	.= "|" ;
 
-<style id="Classeur1_16681_Styles">
-</style>
-<div id="Classeur1_16681" align=center x:publishsource="Excel">
-<table x:str border=0 cellpadding=0 cellspacing=0 width=100% style='border-collapse:collapse'>
-<tr><td><b><?php echo lang_get('selection');?></b></td></tr>
-<tr><td>
-<?php 
-echo lang_get('useworking');?>
-</td><td> 
-<?php 
 if ( $working == 1 ){
-	echo lang_get('yes');
+	$content.= lang_get('yes');
 } else {
-	echo lang_get('no');	
+	$content.= lang_get('no');	
 }
-?>
-</td></tr>
-<tr><td><?php echo lang_get('limitdays');?></td><td> <?php echo $limit;?></td></tr>
-<tr><td><?php echo lang_get('uom');?></td><td> <?php echo $uom;?></td></tr>
-<tr><td><?php echo lang_get('print_statistics_from');?></td><td> <?php echo $day_from . "-". $month_from . "-". $year_from;?></td></tr>
-<tr><td><?php echo lang_get('print_statistics_to');?></td><td> <?php echo $day_to . "-". $month_to . "-". $year_to;?></td></tr>
-<tr><td><?php echo lang_get('status1');?></td><td> <?php echo $status_1 ?></td></tr>
-<tr><td><?php echo lang_get('status2');?></td><td> <?php echo $status_2?></td></tr>
-<tr></tr>
+$content	.= "\r\n";
 
+$content	.= lang_get('limitdays');
+$content	.= "|" ;
+$content	.= $limit;
+$content	.= "\r\n";
 
+$content	.= lang_get('uom');
+$content	.= "|" ;
+$content	.= $uom;
+$content	.= "\r\n";
 
-<tr>
-  <td><?php echo lang_get('val1');?></td>
-  <td><?php echo lang_get('val2');?></td>
-  <td><?php echo lang_get('val3');?></td>
-  <td><?php echo lang_get('val4');?></td>
-	<td><?php echo $status_1;?></td>
-  <td><b><?php echo lang_get('val6');?></b></td>
-	<td><?php echo $status_2;?></td>
-  <td><?php echo lang_get('val8');?></td>
-  <td><?php echo lang_get('val9');?></td>
-  <td><?php echo lang_get('val10');?></td>
-  <td><?php echo lang_get('val11');?></td>
-  <td><?php echo lang_get('project');?></td>
-</tr>
-<?php
+$content	.= lang_get('print_statistics_from');
+$content	.= "|" ;
+$content	.= $day_from . "-". $month_from . "-". $year_from;
+$content	.= "\r\n";
 
+$content	.= lang_get('print_statistics_to');
+$content	.= "|" ;
+$content	.= $day_to . "-". $month_to . "-". $year_to;
+$content	.= "\r\n";
+
+$content	.= lang_get('status1');
+$content	.= "|" ;
+$content	.= $status_1;
+$content	.= "\r\n";
+
+$content	.= lang_get('status2');
+$content	.= "|" ;
+$content	.= $status_2;
+$content	.= "\r\n";
+
+$content	.= "\r\n";
+
+$content	.= lang_get('val1');
+$content	.= "|" ;
+$content	.= lang_get('val2');
+$content	.= "|" ;
+$content	.= lang_get('val3');
+$content	.= "|" ;
+$content	.= lang_get('val4');
+$content	.= "|" ;
+$content	.= $status_1;
+$content	.= "|" ;
+$content	.= lang_get('val6');
+$content	.= "|" ;
+$content	.= $status_2;
+$content	.= "|" ;
+$content	.= lang_get('val8');
+$content	.= "|" ;
+$content	.= lang_get('val9');
+$content	.= "|" ;
+$content	.= lang_get('val10');
+$content	.= "|" ;
+$content	.= lang_get('val11');
+$content	.= "|" ;
+$content	.= lang_get('project');
+$content	.= "\r\n";
 
 // Build & execute queries
 $day_to ++;
@@ -155,23 +166,35 @@ $query2 = " select date_modified from {bug_history} where bug_id=";
 	$val10	= category_get_name( $t_row['category_id'] );
 	$pname	= project_get_name( $t_row['project_id'] );
 	$val11	= user_get_realname( $t_row['handler_id'] );
-?>
-<tr>  
-  <td><?php echo $val1;?></td>
-  <td><?php echo $val2;?></td>
-  <td><?php echo $val3;?></td>
-  <td><?php echo $val4;?></td>
-  <td><?php echo $val5;?></td>
-  <td><b><?php echo $val6;?></b></td>
-  <td><?php echo $val7;?></td>
-  <td><?php echo $val8;?></td>
-  <td><?php echo $val9;?></td>
-  <td><?php echo $val10;?></td>
-  <td><?php echo $val11;?></td>
-  <td><?php echo $pname;?></td>
-</tr>
-<?php
+	
+	$content	.= $val1;
+	$content	.= "|" ;
+	$content	.= $val2;
+	$content	.= "|" ;
+	$content	.= $val3;
+	$content	.= "|" ;
+	$content	.= $val4;
+	$content	.= "|" ;
+	$content	.= $val5;
+	$content	.= "|" ;
+	$content	.= $val6;
+	$content	.= "|" ;
+	$content	.= $val7;
+	$content	.= "|" ;
+	$content	.= $val8;
+	$content	.= "|" ;
+	$content	.= $val9;
+	$content	.= "|" ;
+	$content	.= $val1o;
+	$content	.= "|" ;
+	$content	.= $val11;
+	$content	.= "|" ;
+	$content	.= $pname;
+	$content	.= "\r\n";
 }
-?>
-</table>
-</div>
+# Dowload results as CSV
+header('Content-type: text/enriched');
+header("Content-Disposition: attachment; filename=Export_KPI_to_csv.csv");
+echo $content;
+exit;
+return;

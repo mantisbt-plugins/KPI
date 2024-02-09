@@ -165,7 +165,7 @@ $t_project_id       = helper_get_current_project( );
 <label><input type="text" name="limitdays" size="5" value="<?php echo $limit ?>"/> </label>
 </td><td>
 <input type="submit" name="Send" value="<?php echo lang_get( 'print_statistics_update' ) ?>" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="plugin.php?page=KPI/download_kpi_page.php&day_from=<?php echo $day_from; ?>&month_from=<?php echo $month_from;?>&year_from=<?php echo $year_from;?>&day_to=<?php echo $day_to; ?>&month_to=<?php echo $month_to;?>&year_to=<?php echo $year_to;?>&limit=<?php echo $limit; ?>&status1=<?php echo $stat1 ?>&status2=<?php echo $stat2 ?>&uom=<?php echo $uom ?>&working=<?php echo $working ?>"><img src="<?php echo plugin_file( 'excelicon.gif' ); ?>" width='20' height='20'  ></a>
+<a href="plugin.php?page=KPI/download_kpi_page2.php&day_from=<?php echo $day_from; ?>&month_from=<?php echo $month_from;?>&year_from=<?php echo $year_from;?>&day_to=<?php echo $day_to; ?>&month_to=<?php echo $month_to;?>&year_to=<?php echo $year_to;?>&limit=<?php echo $limit; ?>&status1=<?php echo $stat1 ?>&status2=<?php echo $stat2 ?>&uom=<?php echo $uom ?>&working=<?php echo $working ?>"><img src="<?php echo plugin_file( 'csv.svg' ); ?>" width='25' height='25'  ></a>
 
 </td>
 </tr>
