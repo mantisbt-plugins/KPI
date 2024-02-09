@@ -97,6 +97,8 @@ if ( isset($_REQUEST['working']) ) {
 $status_1 = MantisEnum::getLabel( $status_enum_string, $stat1 ) ;
 $status_2 = MantisEnum::getLabel( $status_enum_string, $stat2 ) ;
 $t_project_id       = helper_get_current_project( );
+$no = 0;
+$yes = 0;
 ?>
 <form method="post" action="<?php echo plugin_page( 'print_kpi_page' );?>">
 <div class="table-responsive"> 
@@ -263,8 +265,10 @@ for( $i=0; $i < $num_records1; $i++ ) {
 	$val6 = workdays(round((strtotime($val7)-strtotime($val5))/86400), $uom, $working);
 	if ( $val6 > $limit ){
 		$val9 = "N";
+		$no ++;
 	}else{
 		$val9 = "Y";
+		$yes ++;
 	}
 	$val10	= category_get_name( $t_row['category_id'] );
 	$pname	= project_get_name( $t_row['project_id'] );
@@ -287,7 +291,15 @@ for( $i=0; $i < $num_records1; $i++ ) {
 	</tr>
 	<?php
 }
+
+$total = $no + $yes;
+if ( $total > 0 ) {
+	$okprc = $yes/$total*100;
+} else {
+	$okprc = 0;
+}
 ?>
+<tr><td><b>Score :</b></td><td><b><?php echo round($okprc,2) ;?>&nbsp;% </b></td></tr>
 </form>
 </table>
 </div>
