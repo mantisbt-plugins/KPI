@@ -1,4 +1,4 @@
-Mantis plugin KPI 2.20 for mantisbt version 2.x
+Mantis plugin KPI 2.22 for mantisbt version 2.x
 
 Author:		Cas Nuy
 Website:	http://www.nuy.info

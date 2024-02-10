@@ -4,7 +4,7 @@ class KPIPlugin extends MantisPlugin {
 	function register() {
 		$this->name        = 'KPI';
 		$this->description = 'Allows for downloading/viewing KPI data.';
-		$this->version     = '2.21';
+		$this->version     = '2.22';
 		$this->requires    = array('MantisCore'       => '2.0.0',);
 		$this->author      = 'Cas Nuy';
 		$this->contact     = 'Cas-at-nuy.info';

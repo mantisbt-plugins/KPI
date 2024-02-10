@@ -15,6 +15,14 @@ $working = $_GET['working'];
 $status_enum_string         = lang_get( 'status_enum_string' );
 $status_1 = MantisEnum::getLabel( $status_enum_string, $stat1 ) ;
 $status_2 = MantisEnum::getLabel( $status_enum_string, $stat2 ) ;
+$project_id                 = helper_get_current_project();
+$specific_where             = helper_project_specific_where( $project_id ); 
+
+$prjlength = strlen ( $specific_where) ;
+$prjlist = substr ( $specific_where, 0, -1);
+$prjlength = $prjlength - 17;
+$prjlist = substr ( $prjlist, 16,$prjlength);
+$list = explode(",", $prjlist);
 
 $content	= '';
 
@@ -60,6 +68,17 @@ $content	.= "|" ;
 $content	.= $status_2;
 $content	.= "\r\n";
 
+$content	.= lang_get('projects_checked');
+$content	.= "|" ;
+for($i = 0, $size = count($list); $i < $size; ++$i) {
+	if ($i >0 ) {
+		$content .= ", ";
+	}
+    $content .=  project_get_name(  $list[$i] );
+}
+$content	.= "\r\n";
+
+
 $content	.= "\r\n";
 
 $content	.= lang_get('val1');
@@ -96,17 +115,12 @@ $t_project_id       = helper_get_current_project( );
 // First select the issues to be measured
 $query1 = " select bug_id,summary, date_submitted,date_modified,handler_id, project_id, category_id from {bug} b" ;
 $query1 .= " left join {bug_history} h ON b.id = h.bug_id where ";
-$query1 .= " h.id = ( SELECT MAX({bug_history}.id) FROM {bug_history} WHERE bug_id = b.id and new_value = " . $stat2;
+$query1 .= $specific_where;
+$query1 .= " and h.id = ( SELECT MAX({bug_history}.id) FROM {bug_history} WHERE bug_id = b.id and new_value = " . $stat2;
 $query1	.= " and field_name = 'status' ";
 $query1	.= " and date_modified <= " .$countdat2 ;
 $query1 .= " and  date_modified >= ".$countdat1;
 $query1 .=	")";
-
-// make sure we only select the correct project
-$filter =  false ;
-if ( $t_project_id!=0 ) {
-	$filter = true;
-} 
 
 $result1= db_query($query1);
 $num_records1 = db_num_rows( $result1 );
@@ -118,9 +132,6 @@ $num_records1 = db_num_rows( $result1 );
 // days3 is days between status1 and status3
 for( $i=0; $i < $num_records1; $i++ ) {
 	$t_row = db_fetch_array( $result1 );
-		if ( ( $filter ) and ($t_row['project_id'] <> $t_project_id ) ) {
-		continue;
-	}
 	// we already have the bug_idfilter out those issues already resolved
 	$val1=$t_row["bug_id"] ;
 	$val2=substr($t_row["summary"],0,50) ;

@@ -22,6 +22,8 @@ auth_ensure_user_authenticated();
 access_ensure_project_level( plugin_config_get( 'kpi_threshold' ) );
 $initial	= plugin_config_get( 'initial' );
 $status_enum_string         = lang_get( 'status_enum_string' );
+$project_id                 = helper_get_current_project();
+$specific_where             = helper_project_specific_where( $project_id );
 
 layout_page_header( lang_get( 'summary_link' ) );
 layout_page_begin( );
@@ -200,17 +202,12 @@ $countdat2 = mktime(0, 0, 0, $month_to, $day_to, $year_to);
 <?PHP
 $query1 = " select bug_id,summary, date_submitted,date_modified,handler_id, project_id, category_id from {bug} b" ;
 $query1 .= " left join {bug_history} h ON b.id = h.bug_id where ";
-$query1 .= " h.id = ( SELECT MAX({bug_history}.id) FROM {bug_history} WHERE bug_id = b.id and new_value = " . $stat2;
+$query1 .= $specific_where ;
+$query1 .= " and h.id = ( SELECT MAX({bug_history}.id) FROM {bug_history} WHERE bug_id = b.id and new_value = " . $stat2;
 $query1	.= " and field_name = 'status' ";
 $query1	.= " and date_modified <= " .$countdat2 ;
-$query1 .= " and  date_modified >= ".$countdat1;
+$query1 .= " and date_modified >= ".$countdat1;
 $query1 .=	")";
-
-// make sure we only select the correct project
-$filter =  false ;
-if ( $t_project_id!=0 ) {
-	$filter = true;
-} 
 
 $result1= db_query($query1);
 
@@ -223,9 +220,6 @@ $num_records1 = db_num_rows( $result1 );
 // days3 is days between status1 and status3
 for( $i=0; $i < $num_records1; $i++ ) {
 	$t_row = db_fetch_array( $result1 );
-	if ( ( $filter ) and ($t_row['project_id'] <> $t_project_id ) ) {
-		continue;
-	}
 	// we already have the bug_id, filter out those issues already resolved
 	$val1=$t_row["bug_id"] ;
 	$val2=substr($t_row["summary"],0,50) ;

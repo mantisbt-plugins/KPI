@@ -38,3 +38,4 @@ $s_uom		= "Unit of measure (D)ays, (H)ours or (M)inutes";
 $s_initial	= "Intial period: last (Y)ear, (M)onth or (D)ay";
 $s_working	= "Yes = Working time ( 5 days , 8 hours, 480 minutes), No = ( 7 days, 8 hours/ 480 minutes";
 $s_useworking	= "Use Working days ( see doc): ";
+$s_projects_checked	= "Projects within scope ";
