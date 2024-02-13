@@ -34,7 +34,7 @@ print_manage_menu();
 	</td>
 	<td>
 		<select name="kpi_threshold">
-			<?php print_enum_string_option_list( 'access_levels', plugin_config_get( 'kpi_treshold' ) ) ?>
+			<?php print_enum_string_option_list( 'access_levels', plugin_config_get( 'kpi_threshold' ) ) ?>
 		</select>
 	</td>
 </tr> 
